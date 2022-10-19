@@ -1,0 +1,63 @@
+{% extends "base.html" %} {% block title %}Register{% endblock %} {% block
+content %}
+<h1 class="display-4 mt-2">User Page</h1>
+<div class="card border-success mb-3">
+  <div class="card-header bg-transparent border-success">User Details</div>
+  <div class="card-body">
+    <h5 class="card-title text-success">Username - {{user.username}}</h5>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">{{user.greet()}}</li>
+    </ul>
+  </div>
+  {% if user.feedback %}
+  <hr />
+  <div class="card-body">
+    <h5 class="card-title text-success">User Feedback</h5>
+    <ul class="list-group list-group-flush">
+      {% for f in user.feedback %}
+      <li class="list-group-item">
+        <strong><a href="/feedback/{{f.id}}/update">{{f.title}}</a></strong> -
+        {{f.content}} {% if session["user"] == user.username or
+        session["is_admin"] == True %}
+        <form
+          method="POST"
+          action="/feedback/{{f.id}}/delete"
+          style="display: inline"
+        >
+          <button type="submit" class="btn btn-link">
+            <i class="fa-solid fa-trash-can mx-1"></i>
+          </button>
+        </form>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %} {% if session["user"] == user.username or session["is_admin"] ==
+  True %}
+  <div class="card-footer bg-transparent border-success">
+    <form
+      style="display: inline"
+      method="GET"
+      action="/users/{{user.username}}/update"
+    >
+      <button class="btn btn-link" type="submit">Edit User</button>
+    </form>
+    <form
+      style="display: inline"
+      method="POST"
+      action="/users/{{user.username}}/delete"
+    >
+      <button class="btn btn-link" type="submit">Delete User</button>
+    </form>
+    <form
+      style="display: inline"
+      method="GET"
+      action="/users/{{user.username}}/feedback/add"
+    >
+      <button class="btn btn-link" type="submit">Add New Feedback</button>
+    </form>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

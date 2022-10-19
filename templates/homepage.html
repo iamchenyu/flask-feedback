@@ -1,0 +1,13 @@
+{% extends "base.html" %} {% block title %}Register{% endblock %} {% block
+content %}
+<h1 class="display-4 mt-2">All User Feedback</h1>
+<ul class="list-group list-group-flush">
+  {% for f in feedback %}
+  <li class="list-group-item">
+    <a href="/users/{{f.user.username}}"
+      >@{{f.user.username}}: {{f.title}} - {{f.content}}</a
+    >
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}
